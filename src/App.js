@@ -1,26 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import io from "socket.io-client";
+import SendMessage from "./components/SendMessage";
+import ShowMessages from "./components/ShowMessages";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const socket = io.connect("http://localhost:4000");
+const chatSignal = "chat";
+
+class App extends React.Component{
+  state = {
+    messages: []
+  }
+
+  componentDidMount(){
+    // console.log(socket);
+    socket.on(chatSignal, this.receiveMessage);
+    
+  }
+
+  receiveMessage = (data) =>{
+    console.log(data);
+    this.setState({
+      messages: [...this.state.messages , {id: data.id , text: data.text , key: data.key}]
+    });
+  }
+
+  sendMessage = (data) =>{
+    console.log(data);
+    this.setState({
+      messages: [...this.state.messages , {id: data.id , text: data.text , key: data.key}]
+    });
+    socket.emit(chatSignal,data);
+  }
+
+  render(){
+    // console.log(socket);
+    return (
+      <div className="App">
+        <ShowMessages messages={this.state.messages} />
+        <SendMessage id={socket.id} sendMessage={this.sendMessage} />
+      </div>
+    );
+  }
 }
 
 export default App;
