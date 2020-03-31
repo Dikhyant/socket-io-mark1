@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import SendMessage from "./components/SendMessage";
 import ShowMessages from "./components/ShowMessages";
 
-const socket = io.connect("http://localhost:4000");
+const socket = io.connect("http://192.168.43.130:4000/");
 const chatSignal = "chat";
 
 class App extends React.Component{

@@ -4,6 +4,10 @@ const socket = require("socket.io");
 const app = express();
 const chatSignal = "chat";
 
+app.get("/",function(req,res){
+    res.sendFile("index.html");
+})
+
 const server = app.listen(4000, function(){
     console.log("initiated server");
 })
